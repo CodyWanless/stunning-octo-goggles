@@ -1,4 +1,4 @@
-import { Color } from "./color";
+import { Color } from './color';
 
 export interface Node<T> {
     color: Color;

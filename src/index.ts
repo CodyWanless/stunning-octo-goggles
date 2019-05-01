@@ -1,4 +1,4 @@
-import { RedBlackTree } from "./red-black-tree/red-black-tree";
+import { RedBlackTree } from './red-black-tree/red-black-tree';
 
 const tree = new RedBlackTree<number>((a, b) => Math.floor(a - b));
 

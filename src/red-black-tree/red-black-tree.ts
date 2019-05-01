@@ -1,6 +1,6 @@
 import { Color } from './color';
 import { Node } from './node';
-import { grandParent, parent, uncle } from './node-helpers';
+import { getGrandParent, getParent, getUncle } from './node-extensions';
 
 export class RedBlackTree<T> {
     private compareFunc: (a: T, b: T) => number;
@@ -25,8 +25,8 @@ export class RedBlackTree<T> {
 
         // find the root 
         this.root = newNode;
-        while (this.root && parent(this.root)) {
-            this.root = parent(this.root);
+        while (this.root && getParent(this.root)) {
+            this.root = getParent(this.root);
         }
     }
 
@@ -49,9 +49,9 @@ export class RedBlackTree<T> {
     }
 
     private insertRepairTree(node: Node<T>): void {
-        const p = parent(node);
-        const nodeUncle = uncle(node);
-        const gp = grandParent(node);
+        const p = getParent(node);
+        const nodeUncle = getUncle(node);
+        const gp = getGrandParent(node);
 
         if (!p) {
             node.color = Color.black;
@@ -79,8 +79,8 @@ export class RedBlackTree<T> {
                 node = node.rightChild;
             }
 
-            const newParent = parent(node);
-            const newGP = grandParent(node);
+            const newParent = getParent(node);
+            const newGP = getGrandParent(node);
 
             if (newGP && newParent && node === newParent.leftChild) {
                 this.rotateRight(newGP);
@@ -98,7 +98,7 @@ export class RedBlackTree<T> {
 
     private rotateLeft(node: Node<T>): void {
         const newNode = node.rightChild;
-        const p = parent(node);
+        const p = getParent(node);
         if (!newNode) {
             // leaf can't be internal node, return
             return;
@@ -124,7 +124,7 @@ export class RedBlackTree<T> {
 
     private rotateRight(node: Node<T>): void {
         const newNode = node.leftChild;
-        const p = parent(node);
+        const p = getParent(node);
         if (!newNode) {
             // leaf can't be internal node, return
             return;

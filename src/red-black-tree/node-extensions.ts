@@ -1,32 +1,33 @@
-import { Node } from './node';
+import { INode } from './node';
 
-export const getParent = <T>(node: Node<T>): Node<T> | null => {
+export const getParent = <T>(node: INode<T>): INode<T> | null => {
     return node.parent;
-}
+};
 
-export const getGrandParent = <T>(node: Node<T>): Node<T> | null => {
+export const getGrandParent = <T>(node: INode<T>): INode<T> | null => {
     const p = getParent(node);
     if (p) {
         return p.parent;
     }
 
     return null;
-}
+};
 
-export const getSibling = <T>(node: Node<T>): Node<T> | null => {
+export const getSibling = <T>(node: INode<T>): INode<T> | null => {
     const p = getParent(node);
     if (p) {
         if (node === p.leftChild) {
             return p.rightChild;
-        } if (node === p.rightChild) {
+        }
+        if (node === p.rightChild) {
             return p.leftChild;
         }
     }
 
     return null;
-}
+};
 
-export const getUncle = <T>(node: Node<T>): Node<T> | null => {
+export const getUncle = <T>(node: INode<T>): INode<T> | null => {
     const p = getParent(node);
     const gp = getGrandParent(node);
 
@@ -35,4 +36,4 @@ export const getUncle = <T>(node: Node<T>): Node<T> | null => {
     }
 
     return getSibling(p);
-}
+};

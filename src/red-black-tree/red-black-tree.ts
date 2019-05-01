@@ -1,10 +1,10 @@
 import { Color } from './color';
-import { Node } from './node';
+import { INode } from './node';
 import { getGrandParent, getParent, getUncle } from './node-extensions';
 
 export class RedBlackTree<T> {
     private compareFunc: (a: T, b: T) => number;
-    private root: Node<T> | null;
+    private root: INode<T> | null;
 
     constructor(compareFunc: (a: T, b: T) => number) {
         this.root = null;
@@ -12,7 +12,7 @@ export class RedBlackTree<T> {
     }
 
     public insert(value: T): void {
-        const newNode: Node<T> = {
+        const newNode: INode<T> = {
             rightChild: null,
             leftChild: null,
             color: Color.red,
@@ -23,16 +23,16 @@ export class RedBlackTree<T> {
         this.bstInsert(null, this.root, newNode);
         this.insertRepairTree(newNode);
 
-        // find the root 
+        // find the root
         this.root = newNode;
         while (this.root && getParent(this.root)) {
             this.root = getParent(this.root);
         }
     }
 
-    private bstInsert(parent: Node<T> | null,
-        currentNode: Node<T> | null,
-        newNode: Node<T>): Node<T> {
+    private bstInsert(parent: INode<T> | null,
+        currentNode: INode<T> | null,
+        newNode: INode<T>): INode<T> {
         if (!currentNode) {
             newNode.parent = parent;
             return newNode;
@@ -41,14 +41,13 @@ export class RedBlackTree<T> {
         const compResult = this.compareFunc(newNode.value, currentNode.value);
         if (compResult < 0) {
             currentNode.leftChild = this.bstInsert(currentNode, currentNode.leftChild, newNode);
-        }
-        else if (compResult > 0) {
+        } else if (compResult > 0) {
             currentNode.rightChild = this.bstInsert(currentNode, currentNode.rightChild, newNode);
         }
         return currentNode;
     }
 
-    private insertRepairTree(node: Node<T>): void {
+    private insertRepairTree(node: INode<T>): void {
         const p = getParent(node);
         const nodeUncle = getUncle(node);
         const gp = getGrandParent(node);
@@ -96,7 +95,7 @@ export class RedBlackTree<T> {
         }
     }
 
-    private rotateLeft(node: Node<T>): void {
+    private rotateLeft(node: INode<T>): void {
         const newNode = node.rightChild;
         const p = getParent(node);
         if (!newNode) {
@@ -122,7 +121,7 @@ export class RedBlackTree<T> {
         newNode.parent = p;
     }
 
-    private rotateRight(node: Node<T>): void {
+    private rotateRight(node: INode<T>): void {
         const newNode = node.leftChild;
         const p = getParent(node);
         if (!newNode) {
